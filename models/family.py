@@ -6,7 +6,7 @@ class Family(Base):
         if entries:
             Base.__init__(self, entries)
             return
-        self.id = 0
+        self._id = 0
         self.created_by = 0
         self.created_on = ''
         self.surname = ''
@@ -17,3 +17,12 @@ class Family(Base):
         self.members = []
         self.admins = []
         self.relations = []
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        self._id = value
+

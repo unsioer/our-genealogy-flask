@@ -6,7 +6,7 @@ class Person(Base):
         if entries:
             Base.__init__(self, entries)
             return
-        self.id = 0
+        self._id = 0
         self.user_id = 0
         self.name = ''
         self.gender = 'M'
@@ -15,3 +15,10 @@ class Person(Base):
         self.born = ''
         self.death = ''
         self.description=''
+
+    @property
+    def id(self):
+        return self._id
+    @id.setter
+    def id(self,value):
+        self._id = value

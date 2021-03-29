@@ -8,6 +8,7 @@ flask = "*"
 flask-pymongo = "*"
 wheel = "*"
 flask-marshmallow = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 
