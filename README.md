@@ -15,4 +15,4 @@
 1. test the code\connections between person\family\relation not yet finished
 2. organize flask project()
 3. more modules (flask api\blue print)
-4. users login\jwt validation
+4. ultimate error handler

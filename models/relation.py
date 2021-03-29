@@ -9,7 +9,7 @@ class Relation(Base):
         if entries:
             Base.__init__(self, entries)
             return
-        self.id = 0
+        self._id = 0
         self.created_by = 0
         self.created_on = ''
         self.from_person = 0
@@ -17,3 +17,14 @@ class Relation(Base):
         self.family_id = 0
         self.type = 0
         self.special = 0
+        self.user_id = 0
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        self._id = value
+
+
