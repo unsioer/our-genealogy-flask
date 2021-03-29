@@ -158,6 +158,7 @@ def add_family():
         else:
             family.admins = [currentUserId]
         family.id = generateID()
+        print(family)
         mongo.db.family.insert_one(family.serialize())
     except Exception as e:
         print(e)
@@ -227,6 +228,8 @@ def register_user():
     #TODO TO VALIDATE UNIQUE EMAIL
     data = json.loads(request.get_data())
     data = check_data(RegisterUserSchema, data)
+    if mongo.db.user.find({"data":data['email']}):
+        abort(403)
     try:
         user = User(entries=data)
         user.type=0

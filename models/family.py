@@ -3,6 +3,9 @@ from models.base import Base
 
 class Family(Base):
     def __init__(self, entries=None):
+        self.members = []
+        self.admins = []
+        self.relations = []
         if entries:
             Base.__init__(self, entries)
             return
@@ -14,9 +17,7 @@ class Family(Base):
         self.area = ''
         self.tanghao = ''
         self.description = ''
-        self.members = []
-        self.admins = []
-        self.relations = []
+
 
     @property
     def id(self):
