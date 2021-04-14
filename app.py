@@ -5,7 +5,8 @@ from models.person import Person
 from models.family import Family
 from models.relation import Relation
 from models.user import  User
-from  utils.utils import currentTime,generateID
+from utils.utils import currentTime,generateID
+from utils.mongo import *
 import json
 from schema.schemas import(
     check_data,
@@ -22,7 +23,7 @@ from flask_jwt_extended import (
 
 
 app = Flask(__name__)
-mongo = PyMongo(app, uri="mongodb://localhost:27017/our_genealogy")
+mongo = PyMongo(app, uri=MONGO_URI)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 jwt = JWTManager(app)
 
@@ -158,6 +159,7 @@ def add_family():
         else:
             family.admins = [currentUserId]
         family.id = generateID()
+        print(family)
         mongo.db.family.insert_one(family.serialize())
     except Exception as e:
         print(e)
@@ -227,6 +229,8 @@ def register_user():
     #TODO TO VALIDATE UNIQUE EMAIL
     data = json.loads(request.get_data())
     data = check_data(RegisterUserSchema, data)
+    if mongo.db.user.find({"data":data['email']}):
+        abort(403)
     try:
         user = User(entries=data)
         user.type=0

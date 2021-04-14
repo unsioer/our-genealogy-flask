@@ -35,12 +35,12 @@ class RelationSchema(Schema):
 
 # todo:information validation
 class RegisterUserSchema(Schema):
-    email = fields.Str(required=True)
+    email = fields.Email(required=True)
     nickname = fields.Str(required=True)
     password = fields.Str(required=True)
     phone = fields.Str(required=True)
 
 #T
 class LoginUsersSchema(Schema):
-    email = fields.Str(required=True)
+    email = fields.Email(required=True)
     password = fields.Str(required=True)
