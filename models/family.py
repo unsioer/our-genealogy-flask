@@ -17,7 +17,10 @@ class Family(Base):
         self.area = ''
         self.tanghao = ''
         self.description = ''
-
+        self.members = []
+        self.admins = []
+        self.relations = []
+        self.avatar_url = ''
 
     @property
     def id(self):
