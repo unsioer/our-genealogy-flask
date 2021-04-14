@@ -265,8 +265,8 @@ def login():
 
 
 
-@jwt_required()
 @app.route('/family/<string:id>/details',methods=['GET'])
+@jwt_required()
 def get_family_detail(id):
     '''首先 构建出所有的用户信息dict
     id最后应该统一化为string 目前使用的测试数据不统一，因此用了多于代码进行处理
@@ -330,6 +330,13 @@ def get_family_detail(id):
     else:
         abort(403)
 
+@app.route('/families',methods=['GET'])
+@jwt_required()
+def get_all_families():
+    currentUserID = get_jwt_identity()
+    query = {"admins":{"$in":[currentUserID]}}
+    families = list(mongo.db.family.find(query))
+    return families
 
 
 
