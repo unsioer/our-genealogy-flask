@@ -5,6 +5,7 @@ from models.person import Person
 from models.family import Family
 from models.relation import Relation
 from models.user import User
+from models.article import Article
 from utils.utils import currentTime, generateID
 from utils.mongo import *
 import json
@@ -33,14 +34,14 @@ def hello_world():
     return 'Hello, World!'
 
 
-@app.route('/person/<int:id>', methods=['GET'])
+@app.route('/person/<string:id>', methods=['GET'])
 @jwt_required()
 def query_person(id):
     currentUserId = get_jwt_identity()
     persons = mongo.db.person.find_one_or_404({'_id': id})
-    person=Person(entries=persons)
+    person = Person(entries=persons)
     print(currentUserId)
-    if person.user_id==currentUserId or currentUserId==1:
+    if person.user_id == currentUserId or currentUserId == 1:
         return person.serialize()
     else:
         abort(403)
@@ -233,6 +234,7 @@ def update_relation(id):
         abort(500)
     return relation.serialize()
 
+
 @app.route('/user/<string:id>', methods=['GET'])
 @jwt_required()
 def query_user(id):
@@ -364,6 +366,24 @@ def get_all_families():
     query = {"admins": {"$in": [currentUserID]}}
     families = list(mongo.db.family.find(query))
     return families
+
+
+@app.route('/articles', methods=['GET'])
+def get_articles():
+    query = {"access_level": {"$in": [0]}}
+    articles = list(mongo.db.article.find(query))
+    print(articles)
+    return jsonify(articles)
+
+
+@app.route('/article/<string:id>', methods=['GET'])
+def get_article(id):
+    articles = mongo.db.article.find_one_or_404({'_id': id})
+    article = Article(entries=articles)
+    if article.access_level == 0:
+        return article.serialize()
+    else:
+        abort(403)
 
 
 if __name__ == '__main__':
