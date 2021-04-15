@@ -248,6 +248,15 @@ def query_user(id):
         abort(403)
 
 
+@app.route('/user', methods=['GET'])
+@jwt_required()
+def query_user_self():
+    currentUserId = get_jwt_identity()
+    users = mongo.db.user.find_one_or_404({'_id': currentUserId})
+    user = User(entries=users)
+    return user.serialize()
+
+
 @app.route('/user', methods=['POST'])
 def register_user():
     #TODO TO VALIDATE UNIQUE EMAIL
@@ -371,6 +380,16 @@ def get_all_families():
 @app.route('/articles', methods=['GET'])
 def get_articles():
     query = {"access_level": {"$in": [0]}}
+    articles = list(mongo.db.article.find(query))
+    print(articles)
+    return jsonify(articles)
+
+
+@app.route('/articles/mine', methods=['GET'])
+@jwt_required()
+def get_my_articles():
+    currentUserID = get_jwt_identity()
+    query = {"user_id": {"$in": [currentUserID]}}
     articles = list(mongo.db.article.find(query))
     print(articles)
     return jsonify(articles)
