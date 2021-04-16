@@ -3,7 +3,7 @@ from models.base import Base
 
 class Person(Base):
     def __init__(self, entries=None):
-        self.families = []
+        self.family=""
         if entries:
             Base.__init__(self, entries)
             return

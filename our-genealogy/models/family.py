@@ -20,7 +20,9 @@ class Family(Base):
         self.members = []
         self.admins = []
         self.relations = []
+        self.read_admins= []
         self.avatar_url = ''
+        self.is_public=''
 
     @property
     def id(self):

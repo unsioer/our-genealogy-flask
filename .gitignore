@@ -1,2 +1,3 @@
 __pycache__
 /utils/mongo.py
+.env
