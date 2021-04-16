@@ -5,7 +5,4 @@ def currentTime():
     return now_time
 def generateID():
     return uuid.uuid1().hex
-# def getUpdateDict(dic:dict):
-#     ret = dict()
-#     for k,v in dic.items():
-#
+
