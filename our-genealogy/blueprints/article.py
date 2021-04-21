@@ -10,7 +10,7 @@ from models.article import Article
 from utils.utils import generateID
 
 from utils.ApiError import *
-from extensions import mongo
+from extensions import mongo,redis_client
 from schema.schemas import(
     check_data,
     PersonSchema
@@ -44,3 +44,15 @@ def get_article(id):
         return article.serialize()
     else:
         raise ApiError(NO_AUTH,403)
+
+@articles_bp.route('/articles/<string:id>/view',methods=['PUT'])
+def add_view(id):
+    ip = request.remote_addr
+    key = ip+":"+id
+    if not redis_client.exists(key):
+        redis_client.set(key,"True")
+        redis_client.expire(key,24*3600) #ip 24h超时，同一ip24h内访问仅计算一次
+        article_key = "viewCount:"+id
+        redis_client.incr(article_key) #redis中增加浏览数
+        #之后定时自动写回
+        return "OK"

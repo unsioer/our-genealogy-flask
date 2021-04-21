@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from extensions import jwt_manager, mongo
+from extensions import jwt_manager, mongo,redis_client,scheduler
 from settings import config
 from utils.ApiError import ApiError
 from blueprints.auth import auth_bp
@@ -25,6 +25,8 @@ def create_app(config_name=None):
 def register_extensions(app):
     mongo.init_app(app)
     jwt_manager.init_app(app)
+    redis_client.init_app(app)
+    scheduler.init_app(app)
 
 
 def register_blueprints(app):

@@ -10,6 +10,8 @@ wheel = "*"
 flask-marshmallow = "*"
 flask-jwt-extended = "*"
 python-dotenv = "*"
+flask-redis = "*"
+flask-apscheduler = "*"
 
 [dev-packages]
 
