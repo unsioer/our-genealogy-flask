@@ -9,7 +9,7 @@ from blueprints.person import person_bp
 from blueprints.article import articles_bp
 from blueprints.relation import relation_bp
 from blueprints.admin import admin_bp
-
+from blueprints.file import file_bp
 
 def create_app(config_name=None):
     if config_name == None:
@@ -37,7 +37,7 @@ def register_blueprints(app):
     app.register_blueprint(articles_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
-
+    app.register_blueprint(file_bp)
 
 def register_errorhandles(app):
     @app.errorhandler(ApiError)
