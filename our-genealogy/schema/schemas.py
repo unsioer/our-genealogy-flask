@@ -49,3 +49,6 @@ class RegisterUserSchema(Schema):
 class LoginUsersSchema(Schema):
     email = fields.Email(required=True)
     password = fields.Str(required=True)
+
+class CommentSchema(Schema):
+    content = fields.Str(required=True)

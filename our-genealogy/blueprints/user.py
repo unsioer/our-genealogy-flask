@@ -24,7 +24,7 @@ user_bp = Blueprint('user', __name__)
 def register_user():
     data = json.loads(request.get_data())
     data = check_data(RegisterUserSchema, data)
-    if mongo.db.user.find({"data": data['email']}):
+    if list(mongo.db.user.find({"email": data['email']}))!=[]:
         raise ApiError(EMAIL_ALREADY_EXIST)
     user = User(entries=data)
     user.type = 0
