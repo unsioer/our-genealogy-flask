@@ -29,6 +29,12 @@ def get_family(id):
     family = Family(entries=family)
     # todo: judge special jwt,public family
     if check_family_read_auth(family, currentUserId, is_admin):
+        memberList = []
+        for member in family.members:
+            person = mongo.db.person.find_one_or_404({'_id': member})
+            memberList.append(person)
+        family.members = memberList
+
         return family.serialize()
     else:
         raise ApiError(NO_AUTH, 403)
