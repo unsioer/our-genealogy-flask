@@ -6,10 +6,11 @@ def add_view():
     article_ids = redis_client.keys("viewCount:*")
     for id in article_ids:
         # print((id.decode()))
-        id = id.decode()
+        # id = id.decode()
         v = redis_client.get(id)
         article_id = id.split(":")[1]
-        viewCount = eval(v.decode())
+        viewCount = eval(v)
+        # viewCount = eval(v.decode())
         if viewCount!=0:
             print(viewCount)
             redis_client.set(id,0)
