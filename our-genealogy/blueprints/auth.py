@@ -1,3 +1,6 @@
+from datetime import timedelta
+
+ACCESS_EXPIRES = timedelta(hours=1)
 
 from models.user import User
 import json
@@ -6,13 +9,13 @@ from utils.utils import *
 from utils.ApiError import *
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
-    get_jwt_identity,
+    get_jwt_identity, get_jwt,
 )
 from schema.schemas import(
     check_data,
     LoginUsersSchema
 )
-from extensions import mongo
+from extensions import mongo,redis_client
 
 auth_bp = Blueprint('auth',__name__)
 
@@ -36,3 +39,9 @@ def login():
         return jsonify(access_token=access_token)
     else:
         raise ApiError(WRONG_PASSWORD)
+@auth_bp.route('/logout',methods=['DELETE'])
+@jwt_required()
+def logout():
+    jti = get_jwt()['jti']
+    redis_client.set(jti, "", ex=ACCESS_EXPIRES)
+    return jsonify(msg="Access token revoked")
