@@ -52,3 +52,11 @@ class LoginUsersSchema(Schema):
 
 class CommentSchema(Schema):
     content = fields.Str(required=True)
+
+class ArticleSchema(Schema):
+    title = fields.Str(required=True)
+    thumbnail = fields.Str()
+    extra = fields.Str()
+    access_level = fields.Int(required=True)
+    content = fields.Str(required=True)
+    families = fields.List(cls_or_instance=fields.Str())

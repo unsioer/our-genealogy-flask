@@ -14,7 +14,8 @@ from extensions import mongo,redis_client
 from schema.schemas import(
     check_data,
     PersonSchema,
-    CommentSchema
+    CommentSchema,
+    ArticleSchema
 )
 from utils.authCheck import *
 
@@ -46,6 +47,37 @@ def get_article(id):
         return article.serialize()
     else:
         raise ApiError(NO_AUTH,403)
+
+
+@articles_bp.route('/article', methods=['POST'])
+@jwt_required()
+def add_article():
+    data = json.loads(request.get_data())
+    data = check_data(ArticleSchema,data)
+    user_id = get_jwt_identity()
+    data['_id']=generateID()
+    data['user_id']=user_id
+    data['create_time']=currentTime()
+    data['modified_time']=data['create_time']
+    data['click_num']=data['like_num']=data['favorite_num']=0
+    mongo.db.article.insert_one(data)
+    article = mongo.db.article.find_one_or_404({'_id':data['_id']})
+    return article
+
+
+@articles_bp.route('/article/<string:id>', methods=['PUT'])
+@jwt_required()
+def edit_article(id):
+    data = json.loads(request.get_data())
+    data = check_data(ArticleSchema,data)
+    user_id = get_jwt_identity()
+    article_query = {"$and":[{"_id":id},{"user_id":user_id}]}
+    article = mongo.db.article.find_one_or_404(article_query)
+    data['update_time']=currentTime()
+    update_data={'$set':data}
+    mongo.db.article.update_one(article_query,update_data)
+    article = mongo.db.article.find_one_or_404(article_query)
+    return article
 
 @articles_bp.route('/articles/<string:id>/view',methods=['PUT'])
 def add_view(id):
