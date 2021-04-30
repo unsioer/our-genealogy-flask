@@ -57,8 +57,8 @@ def add_article():
     user_id = get_jwt_identity()
     data['_id']=generateID()
     data['user_id']=user_id
-    data['create_time']=currentTime()
-    data['modified_time']=data['create_time']
+    data['created_time']=currentTime()
+    data['modified_time']=data['created_time']
     data['click_num']=data['like_num']=data['favorite_num']=0
     mongo.db.article.insert_one(data)
     article = mongo.db.article.find_one_or_404({'_id':data['_id']})
@@ -73,7 +73,7 @@ def edit_article(id):
     user_id = get_jwt_identity()
     article_query = {"$and":[{"_id":id},{"user_id":user_id}]}
     article = mongo.db.article.find_one_or_404(article_query)
-    data['update_time']=currentTime()
+    data['modified_time']=currentTime()
     update_data={'$set':data}
     mongo.db.article.update_one(article_query,update_data)
     article = mongo.db.article.find_one_or_404(article_query)
