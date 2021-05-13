@@ -10,13 +10,13 @@ An online genealogy application powered by Flask and MongoDB.
 4. flask run
 
 ``` bash
-source env.sh & pipenv run python our-genealogy/app.py
+source env.sh; pipenv run python our-genealogy/app.py
 ```
 
 or
 
 ``` powershell
-./env.ps1 & pipenv run python our-genealogy/app.py
+./env.ps1; pipenv run python our-genealogy/app.py
 ```
 
 ## todo
